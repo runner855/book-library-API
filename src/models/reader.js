@@ -1,6 +1,6 @@
 module.exports = (connection, DataTypes) => {
     const schema = {
-        mame: DataTypes.STRING,
+        name: DataTypes.STRING,
         email: DataTypes.STRING,
     };
 

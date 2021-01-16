@@ -32,12 +32,13 @@ describe("/readers", () => {
 
       const insertedReaderRecords = await Reader.findByPk(response.body.id, {
         raw: true,
-        
       });
-      expect(res.body.name).to.equal("John");
-      expect(res.body.email).to.equal("john@iamareader.com");
+      expect(insertedReaderRecords.name).to.equal("John");
+      expect(insertedReaderRecords.email).to.equal("john@iamareader.com");
     });
   });
+
+
 
   describe("with readers in the database", () => {
     let readers;
@@ -51,5 +52,53 @@ describe("/readers", () => {
         done();
       });
     });
+    describe("GET /readers", () => {
+      it("gets all readers records", (done) => {
+        request(app)
+        .get("/readers")
+        .then((res) => {
+          expect(res.status).to.equal(200);
+          expect(res.body.length).to.equal(3);
+          res.body.forEach((reader) => {
+            const expected = readers.find((a) => a.id === reader.id);
+            expect(reader.name).to.equal(expected.name);
+            expect(reader.email).to.equal(expected.email);
+          })
+          done();
+        })
+      })
+      describe("PATCH /readers/:id", () => {
+        it("updates readers name by id", (done) => {
+          const reader = readers[0];
+          request(app)
+          .patch(`/readers/${reader.id}`)
+          .send({ name: "Paul" })
+          .then((res) => {
+            expect(res.status).to.equal(200);
+            Reader.findByPk(reader.id, { raw: true }).then(
+              (updatedReader) => {
+                expect(updatedReader.name).to.equal("Paul");
+                done();
+              }
+            )
+          })
+        })
+        describe("DELETE /readers/:id", () => {
+          it("deletes readers by id", (done) => {
+            const reader = readers[0];
+            request(app)
+            .delete(`/readers/${reader.id}`)
+            .then((res) => {
+              expect(res.status).to.equal(204);
+              Reader.findByPk(reader.id, { raw: true }).then((deletedReader) => {
+                expect(deletedReader).to.equal(null);
+                done();
+              })
+
+            })
+          })
+        })
+      })
+    })
   });
 });
