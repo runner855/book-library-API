@@ -1,4 +1,4 @@
-const { Reader } = require("../models");
+const { Reader, Book } = require("../models");
 
 exports.create = (req, res) => {
   Reader.create(req.body).then((reader) => {

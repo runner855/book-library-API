@@ -25,6 +25,7 @@ describe("/readers", () => {
       const response = await request(app).post("/readers").send({
         name: "John",
         email: "john@iamareader.com",
+        password: "password",
       });
 
       await expect(response.status).to.equal(201);
@@ -35,8 +36,11 @@ describe("/readers", () => {
       });
       expect(insertedReaderRecords.name).to.equal("John");
       expect(insertedReaderRecords.email).to.equal("john@iamareader.com");
+      expect(insertedReaderRecords.password).to.equal("password");
+
     });
   });
+
 
 
 
@@ -44,9 +48,9 @@ describe("/readers", () => {
     let readers;
     beforeEach((done) => {
       Promise.all([
-        Reader.create({ name: "John", email: "john@iamareader.com" }),
-        Reader.create({ name: "Laura", email: "laura@iamlaura.com" }),
-        Reader.create({ name: "Tom", email: "tom@imnotuncletom.com" }),
+        Reader.create({ name: "John", email: "john@iamareader.com", password: "secret" }),
+        Reader.create({ name: "Laura", email: "laura@iamlaura.com", password: "supersecret" }),
+        Reader.create({ name: "Tom", email: "tom@imnotuncletom.com", password: "verysecret" }),
       ]).then((documents) => {
         readers = documents;
         done();
@@ -63,6 +67,8 @@ describe("/readers", () => {
             const expected = readers.find((a) => a.id === reader.id);
             expect(reader.name).to.equal(expected.name);
             expect(reader.email).to.equal(expected.email);
+            expect(reader.password).to.equal(expected.password);
+
           })
           done();
         })
@@ -77,6 +83,8 @@ describe("/readers", () => {
               expect(res.status).to.equal(200);
               expect(res.body.name).to.equal(reader.name);
               expect(res.body.email).to.equal(reader.email);
+              expect(res.body.password).to.equal(reader.password);
+
               done();
         }).catch(error => done(error));
       })
