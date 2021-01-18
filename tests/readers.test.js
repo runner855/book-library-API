@@ -4,7 +4,7 @@ const { Reader } = require("../src/models");
 const app = require("../src/app");
 
 describe("/readers", () => {
-  before(async () => {
+  before(async () =>  {
     try {
       await Reader.sequelize.sync();
     } catch (err) {
@@ -67,6 +67,20 @@ describe("/readers", () => {
           done();
         })
       })
+
+      describe("GET /readers/:id", () => {
+        it('gets readers by id', (done) => {
+          const reader = readers[0];
+          request(app)
+            .get(`/readers/${reader.id}`)
+            .then((res) => {
+              expect(res.status).to.equal(200);
+              expect(res.body.name).to.equal(reader.name);
+              expect(res.body.email).to.equal(reader.email);
+              done();
+        }).catch(error => done(error));
+      })
+    });
       describe("PATCH /readers/:id", () => {
         it("updates readers name by id", (done) => {
           const reader = readers[0];

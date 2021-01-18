@@ -1,4 +1,3 @@
-const { restart } = require("nodemon");
 const { Reader } = require("../models");
 
 exports.create = (req, res) => {
@@ -12,6 +11,13 @@ exports.list = (req, res) => {
     res.status(200).json(reader);
   });
 };
+
+exports.getReaderById = (req, res) => {
+  const { id } = req.params;
+  Reader.findByPk(id).then((reader) => {
+    res.status(200).json(reader);
+  })
+}
 
 exports.update = (req, res) => {
   const { id } = req.params;
