@@ -14,9 +14,9 @@ const setupDatabase = () => {
 
     const Reader = ReaderModel(sequelize, Sequelize);
 
-    const Reader = BookModel(sequelize, Sequelize);
+    const Book = BookModel(sequelize, Sequelize);
 
-    Book.belongTo(Reader, { as: reader });
+    Book.belongsTo(Reader, { as: 'reader' });
 
 
 
