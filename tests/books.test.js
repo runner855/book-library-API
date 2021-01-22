@@ -38,7 +38,9 @@ describe("/books", () => {
           raw: true,
         });
         expect(response.status).to.equal(400);
-        expect(response.body.error).to.equal("You need to insert the book author" );
+        expect(response.body.error).to.equal(
+          "You need to insert the book author"
+        );
         expect(newBookRecord).to.equal(null);
       });
       it("can't create the book if there are no title", async () => {
@@ -47,7 +49,6 @@ describe("/books", () => {
           author: "John Grisham",
           genre: "Spy",
           ISBN: "33998856",
-
         });
         const newBookRecord = await Book.findByPk(response.body.id, {
           raw: true,
@@ -127,25 +128,25 @@ describe("with no records in the database", () => {
   });
 
   describe("PATCH /books/:id", () => {
-    it("updates the book genre by id", async () => {
+    it("updates the book title by id", async () => {
       const book = books[0];
       const response = await request(app)
         .patch(`/books/${book.id}`)
-        .send({ genre: "Politics" });
+        .send({ title: "I don't know" });
       const updatedBookRecord = await Book.findByPk(book.id, {
         raw: true,
       });
-      expect(response.status).to.equal(204);
+      expect(response.status).to.equal(200);
       expect(updatedBookRecord.genre).to.equal("Politics");
-
     });
 
     it("returns 404 if the book does not exist", async () => {
-      const response = await request(app).patch("/books/12345");
-        
-      expect(response.status).to.equal(404);
-      expect(response.body.error).to.equal("The book does not exist");
+      const response = await request(app).patch("/books/12345").send({ 
+        title: "I don't know"
+      });
 
+      expect(response.status).to.equal(404);
+      expect(response.body.error).to.equal("The book could not be found.");
     });
   });
 
@@ -155,7 +156,7 @@ describe("with no records in the database", () => {
       const response = await request(app).delete(`/books/${book.id}`);
       const deletedBook = await Book.findByPk(book.id, { raw: true });
 
-      expect(response.status).to.equal(200);
+      expect(response.status).to.equal(204);
       expect(deletedBook).to.equal(null);
     });
 
@@ -167,4 +168,3 @@ describe("with no records in the database", () => {
     });
   });
 });
-
