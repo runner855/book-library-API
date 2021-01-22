@@ -14,9 +14,12 @@ app.patch('/readers/:id', readerControllers.update);
 
 app.delete('/readers/:id', readerControllers.destroy);
 
-app.post('/readers/:readerId/books', bookControllers.create);
+app.post('/books', bookControllers.create);
 
 app.get('/books', bookControllers.list);
+
+app.get('/books/:id', bookControllers.getBookById);
+
 
 app.patch('/books/:id', bookControllers.update);
 

@@ -1,40 +1,71 @@
-const { Book, Reader } = require("../models");
+const { Book } = require("../models");
 
 exports.create = (req, res) => {
   Book.create(req.body).then((book) => {
+  if(!book) {
+    res.status(400).json({ error: "no book"});
+  } else {
     res.status(201).json(book);
-  });
+  }
+  
+
+    
+    }).catch(error => { 
+      const errorArray = error.errors.map( error => error.message)
+      res.status(400).json({error: errorArray[0]});
+   
+  })
 };
 
+
 exports.list = (req, res) => {
-  Book.findAll(req.body).then((book) => {
-    res.status(200).json(book);
-  });
+  Book.findAll(req.body).then((books) => {
+
+    res.status(200).json(books);
+  }).catch(error => done (error));
 };
+
+exports.getBookById = (req, res) => {
+  const { id } = req.params;
+  Book.findByPk(id).then((books) =>  {
+    if(!books) {
+      res.status(404).json({ error: "The book could not be found." });
+    } else {
+      res.status(200).json(books);
+}
+}).catch(error => done(error));
+
+  };
+
+
+
 
 exports.update = (req, res) => {
   const { id } = req.params;
-  Book.update(req.body, { where: { id } }).then((updatedBook) => {
-    if (!updatedBook) {
-      res.status(404).json({ error: "The book could not be found." });
+  Book.update( req.body, { where: { id } }).then((updatedBookRecord) => {
+    if (!updatedBookRecord || updatedBookRecord[0] === 0) {
+      res.status(404).json({ error: "The book does not exist" });
     } else {
       Book.findByPk(id).then((book) => {
         res.status(204).json(book);
-      });
-    }
-  });
-};
+      
+    })
+  }
+})
+}
 
 exports.destroy = (req, res) => {
   const { id } = req.params;
 
-  Book.destroy({ where: { id } }).then((deletedrows) => {
+  Book.destroy({ where: { id } }).catch(error => res.status(404).json({ error: "error"}))
+  .then((deletedrows) => {
     if (!deletedrows) {
       res.status(404).json({ error: "The book could not be found." });
     } else {
       Book.findByPk(id).then((book) => {
-        res.status(204).json(book);
-      });
+        res.status(200).json(book);
+      
+      })
     }
-  });
-};
+  })
+}
