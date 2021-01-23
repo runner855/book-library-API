@@ -1,12 +1,13 @@
 const { Book } = require("../models");
 
-exports.create = (req, res) => {
-  Book.create(req.body)
-    .then((book) => {
-      if (!book) {
+const createBook = (req, res) => {
+  const newBook = req.body;
+  Book.create(newBook)
+    .then((newBookCreated) => {
+      if (!newBookCreated) {
         res.status(400).json({ error: "The book could not be found." });
       } else {
-        res.status(201).json(book);
+        res.status(201).json(newBookCreated);
       }
     })
     .catch((error) => {
@@ -15,15 +16,15 @@ exports.create = (req, res) => {
     });
 };
 
-exports.list = (req, res) => {
-  Book.findAll(req.body)
+const allMyBooks = (req, res) => {
+  Book.findAll()
     .then((books) => {
       res.status(200).json(books);
     })
     .catch((error) => done(error));
 };
 
-exports.getBookById = (req, res) => {
+const getBookById = (req, res) => {
   const { id } = req.params;
   Book.findByPk(id)
     .then((books) => {
@@ -36,26 +37,27 @@ exports.getBookById = (req, res) => {
     .catch((error) => done(error));
 };
 
-exports.update = (req, res) => {
+const updateMyBook = (req, res) => {
   const { id } = req.params;
+  const bookDetails = req.body;
 
-  Book.update(req.body, { where: { id } }).then(([updatedBookRecord]) => {
-    if (!updatedBookRecord) {
+  Book.update(bookDetails, { where: { id } }).then(([recordsUpdated]) => {
+    if (!recordsUpdated) {
       res.status(404).json({ error: "The book could not be found." })
     } else {
-      Book.findByPk(id).then((updatedBookRecord) => {
-        res.status(200).json(updatedBookRecord);
+      Book.findByPk(id).then((updatednewBook) => {
+        res.status(200).json(updatednewBook);
       })
     }
   })
 };
 
-exports.destroy = (req, res) => {
+const deletedBook = (req, res) => {
   const { id } = req.params;
 
   Book.destroy({ where: { id } })
-  .then((deletedrows) => {
-    if (!deletedrows) {
+  .then((foundBook) => {
+    if (!foundBook) {
       res.status(404).json({ error: "The book could not be found." });
     } else {
       Book.findByPk(id).then((book) => {
@@ -63,4 +65,12 @@ exports.destroy = (req, res) => {
       });
     }
   });
+};
+
+module.exports = {
+  allMyBooks,
+  getBookById,
+  createBook,
+  updateMyBook,
+  deletedBook,
 };

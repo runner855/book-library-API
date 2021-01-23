@@ -48,11 +48,11 @@ describe("/readers", () => {
         expect(response.body.error).to.equal("This is not a valid email");
       });
 
-      it("name and password can't be empty", async () => {
+      it("you need to add your password", async () => {
         const response = await request(app).post("/readers").send({
-          name: "",
+          name: "Josh",
           password: "",
-          email: "myem@me.com"
+          email: "email@domain.com",
         });
         const newReaderRecord = await Reader.findByPk(response.body.id, {
           raw: true,
@@ -62,6 +62,8 @@ describe("/readers", () => {
         expect(response.body.error).to.equal("Your password must be at least 8 characters long");
         expect(newReaderRecord).to.equal(null);
       });
+    
+  
       it("you need to add your name", async () => {
         const response = await request(app).post("/readers").send({
           name: "",
@@ -134,7 +136,7 @@ describe("/readers", () => {
         const response = await request(app).get("/readers/12345");
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal("The reader could not be found.");
+        expect(response.body.error).to.equal("The reader could not be found");
       });
     });
 
@@ -156,7 +158,7 @@ describe("/readers", () => {
         const response = await request(app)
           .patch("/readers/12345")
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal("The reader could not be found.");
+        expect(response.body.error).to.equal("The reader could not be found");
       });
     });
 
@@ -175,7 +177,7 @@ describe("/readers", () => {
         .delete("/readers/12345")
 
         expect(response.status).to.equal(404);
-        expect(response.body.error).to.equal("The reader could not be found.");
+        expect(response.body.error).to.equal("The reader could not be found");
       });
     });
   });
