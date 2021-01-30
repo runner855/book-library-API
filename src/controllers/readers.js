@@ -10,7 +10,7 @@ const {
 
 const createReader = (req, res) => createItem(res, 'reader', req.body);
 
-const listReaders = (_, res) => getAllItems(res, 'reader');
+const listReaders = (req, res) => getAllItems(res, 'reader', req.body);
 
 const readersById = (req, res) => getItemById(res, 'reader', req.params.id);
 

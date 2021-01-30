@@ -35,13 +35,21 @@ const createItem = (res, model, item) => {
 const getAllItems = (res, model) => {
     const Model = getModel(model);
 
-    return Model.findAll().then((allItems) => {
+    return Model.findAll({ include: Book }).then((allItems) => {
         const itemsWithoutPassword = allItems.map((item) => 
             removePassword(item.dataValues)
         );
         res.status(200).json(itemsWithoutPassword);
     });
 };
+
+const getAllBooks = (res, model) => {
+    const Model = getModel(model);
+  
+    return Model.findAll({ include: Book }).then((items) => {
+      res.status(200).json(items);
+    });
+  };
 
 const updateItem = (res, model, item, id) => {
     const Model = getModel(model);
@@ -64,7 +72,11 @@ const updateItem = (res, model, item, id) => {
 const getItemById = (res, model, id) => {
     const Model = getModel(model);
 
-    return Model.findByPk(id)
+    return Model.findByPk(id, { includes: Genre }).then((item) => {
+        if (!item) {
+
+        }
+    })
     .catch((error) =>
       res.status(404).json({ error: "The reader could not be found" })
     )
@@ -103,4 +115,5 @@ module.exports = {
     updateItem,
     getItemById,
     deleteItem,
+    getAllBooks
 };

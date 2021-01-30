@@ -1,4 +1,4 @@
-module.exports = (connection, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const schema = {
     name: {
       allowNull: false,
@@ -16,6 +16,6 @@ module.exports = (connection, DataTypes) => {
     },
   };
 
-  const AuthorModel = connection.define("Author", schema);
-  return AuthorModel;
+  return sequelize.define("Author", schema);
+ 
 };

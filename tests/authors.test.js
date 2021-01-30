@@ -19,7 +19,6 @@ describe("/authors", () => {
         expect(response.status).to.equal(201);
         expect(response.body.name).to.equal("Barack Obama");
         expect(newAuthorRecord.name).to.equal("Barack Obama");
-        console.log(response.body);
       });
     });
   });
@@ -30,7 +29,7 @@ describe("/authors", () => {
     beforeEach(async () => {
       await Author.destroy({ where: {} });
 
-      Authors = await Promise.all([
+      authors = await Promise.all([
         Author.create({
           name: "Evan Osnos",
         }),
@@ -46,9 +45,10 @@ describe("/authors", () => {
     describe("GET /authors", () => {
       it("gets all the authors", async () => {
         const response = await request(app).get("/authors");
+        
 
         expect(response.status).to.equal(200);
-        expect(response.body.length).to.equal(1);
+        expect(response.body.length).to.equal(3);
 
         response.body.forEach((author) => {
           const expected = authors.find((a) => a.id === author.id);

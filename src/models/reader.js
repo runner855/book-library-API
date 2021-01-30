@@ -1,5 +1,5 @@
 
-module.exports = (connection, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const schema = {
     name: {
       type: DataTypes.STRING,
@@ -55,6 +55,6 @@ module.exports = (connection, DataTypes) => {
     },
   };
 
-  const ReaderModel = connection.define("Reader", schema);
-  return ReaderModel;
+  return sequelize.define("Reader", schema);
+  
 };

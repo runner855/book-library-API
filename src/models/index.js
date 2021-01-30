@@ -22,11 +22,13 @@ const setupDatabase = () => {
 
   const Genre = GenreModel(sequelize, Sequelize);
 
-  Book.belongsTo(Reader, { as: "reader", constraints: false  });
-  Author.hasMany(Book, { as: "book", constraints: false });
-  Genre.hasMany(Book, { as: "book", constraints: false});
-  Book.hasOne(Genre, { as: 'book_genre', constraints: false});
-  Book.hasOne(Author, { as: 'book_author', constraints: false});
+  Reader.hasMany(Book);
+  Genre.hasMany(Book);
+  Book.belongsTo(Genre);
+  Author.hasMany(Book);
+  Book.belongsTo(Author);
+  Book.belongsTo(Reader);
+
 
   sequelize.sync({ alter: true });
   return {

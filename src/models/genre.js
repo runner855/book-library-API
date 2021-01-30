@@ -1,21 +1,22 @@
-module.exports = (connection, DataTypes) => {
+
+module.exports = (sequelize, DataTypes) => {
     const schema = {
-      name: {
+      genre: {
         allowNull: false,
         type: DataTypes.STRING,
+        unique: true,
         validate: {
           notNull: {
             args: [true],
-            msg: "You need to insert a valid author name",
+            msg: "We need a genre to be able to create one",
           },
           notEmpty: {
             args: [true],
-            msg: "You need to insert a valid author name",
+            msg: "We need a genre to be able to create one",
           },
         },
       },
     };
   
-    const GenreModel = connection.define("Genre", schema);
-    return GenreModel;
+   return sequelize.define("Genre", schema);
   };

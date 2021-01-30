@@ -1,4 +1,4 @@
-module.exports = (connection, DataTypes) => {
+module.exports = (sequelize, DataTypes) => {
   const schema = {
     title: {
       allowNull: false,
@@ -30,10 +30,9 @@ module.exports = (connection, DataTypes) => {
         },
       },
     },
-    genre: DataTypes.STRING,
     ISBN: DataTypes.STRING,
+    genre: DataTypes.STRING,
   };
 
-  const BookModel = connection.define("Book", schema);
-  return BookModel;
+  return sequelize.define("Book", schema);
 };
