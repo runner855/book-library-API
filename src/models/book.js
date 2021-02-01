@@ -31,7 +31,6 @@ module.exports = (sequelize, DataTypes) => {
       },
     },
     ISBN: DataTypes.STRING,
-    genre: DataTypes.STRING,
   };
 
   return sequelize.define("Book", schema);

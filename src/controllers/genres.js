@@ -5,7 +5,7 @@ const createGenre = (req, res) => {
   Genre.create(newGenre)
     .then((newGenreCreated) => {
       if (!newGenreCreated) {
-        res.status(400).json({ error: "The genre could not be found." });
+        res.status(400).json({ error: "The genre could not be found" });
       } else {
         res.status(201).json(newGenreCreated);
       }
@@ -29,7 +29,7 @@ const getGenreById = (req, res) => {
   Genre.findByPk(id)
     .then((genres) => {
       if (!genres) {
-        res.status(404).json({ error: "The genre could not be found." });
+        res.status(404).json({ error: "The genre could not be found" });
       } else {
         res.status(200).json(genres);
       }
@@ -43,7 +43,7 @@ const updateMyGenre = (req, res) => {
 
   Genre.update(genreDetails, { where: { id } }).then(([updatedGenreRecord]) => {
     if (!updatedGenreRecord) {
-      res.status(404).json({ error: "The genre could not be found." })
+      res.status(404).json({ error: "The genre could not be found" })
     } else {
       Genre.findByPk(id).then((updatednewGenre) => {
         res.status(200).json(updatednewGenre);
@@ -58,7 +58,7 @@ const deletedGenre = (req, res) => {
   Genre.destroy({ where: { id } })
   .then((foundGenre) => {
     if (!foundGenre) {
-      res.status(404).json({ error: "The genre could not be found." });
+      res.status(404).json({ error: "The genre could not be found" });
     } else {
       
       Genre.findByPk(id).then((genre) => {

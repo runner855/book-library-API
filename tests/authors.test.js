@@ -7,18 +7,18 @@ describe("/authors", () => {
   before(async () => Author.sequelize.sync());
 
   describe("with no records in the database", () => {
-    describe("POST /author", () => {
+    describe("POST /authors", () => {
       it("creates a new author in the database", async () => {
         const response = await request(app).post("/authors").send({
-          name: "Barack Obama",
+          name: "Captain Tom Moore",
         });
         const newAuthorRecord = await Author.findByPk(response.body.id, {
           raw: true,
         });
 
         expect(response.status).to.equal(201);
-        expect(response.body.name).to.equal("Barack Obama");
-        expect(newAuthorRecord.name).to.equal("Barack Obama");
+        expect(response.body.name).to.equal("Captain Tom Moore");
+        expect(newAuthorRecord.name).to.equal("Captain Tom Moore");
       });
     });
   });
@@ -31,7 +31,7 @@ describe("/authors", () => {
 
       authors = await Promise.all([
         Author.create({
-          name: "Evan Osnos",
+          name: "Captain Tom Moore",
         }),
         Author.create({
           name: "Kamala Harris",

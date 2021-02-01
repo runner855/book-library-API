@@ -13,7 +13,7 @@ router
 router
   .route("/:id")
 
-  .get(readerController.readersById)
+  .get(readerController.getReadersById)
 
   .patch(readerController.updateReader)
 

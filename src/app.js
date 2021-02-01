@@ -16,10 +16,7 @@ app.use('/genres', genreRouter);
 
 
 
-console.log(readerRouter);
-console.log(bookRouter);
-console.log(authorRouter);
-console.log(genreRouter);
+
 
 
 

@@ -4,6 +4,7 @@ const { Book } = require("../src/models");
 const app = require("../src/app");
 
 describe("/books", () => {
+ 
   before(async () => Book.sequelize.sync());
 
   describe("with no records in the database", () => {
@@ -12,7 +13,7 @@ describe("/books", () => {
         const response = await request(app).post("/books").send({
           title: "A Promised Land",
           author: "Barack Obama",
-          genre: "Biography",
+          // genre: "Biography",
           ISBN: "123444",
         });
         const newBookRecord = await Book.findByPk(response.body.id, {
@@ -23,7 +24,7 @@ describe("/books", () => {
         expect(response.body.title).to.equal("A Promised Land");
         expect(newBookRecord.title).to.equal("A Promised Land");
         expect(newBookRecord.author).to.equal("Barack Obama");
-        expect(newBookRecord.genre).to.equal("Biography");
+        // expect(newBookRecord.genre).to.equal("Biography");
         expect(newBookRecord.ISBN).to.equal("123444");
       });
 
@@ -71,9 +72,9 @@ describe("with no records in the database", () => {
 
     books = await Promise.all([
       Book.create({
-        title: "Joe Biden: American Dreamer",
-        author: "Evan Osnos",
-        genre: "Politics",
+        title: "Tomorrow Will Be A Good Day",
+        author: "Captain Tom Moore",
+        genre: "History",
         ISBN: "145678",
       }),
       Book.create({
@@ -137,7 +138,7 @@ describe("with no records in the database", () => {
         raw: true,
       });
       expect(response.status).to.equal(200);
-      expect(updatedBookRecord.genre).to.equal("Politics");
+      // expect(updatedBookRecord.genre).to.equal("Politics");
     });
 
     it("returns 404 if the book does not exist", async () => {

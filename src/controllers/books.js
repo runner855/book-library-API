@@ -21,7 +21,6 @@ const allMyBooks = (req, res) => {
     .then((books) => {
       res.status(200).json(books);
     })
-    .catch((error) => done(error));
 };
 
 const getBookById = (req, res) => {
